@@ -666,6 +666,7 @@ import { getDatabase, ref, onValue, set }
 //  CONSTANTS
 // ═══════════════════════════════════════════
 const START_DATE      = '2026-06-22';
+const BADGE_START_DATE = '2026-06-29';
 const SUCCESS_MIN     = 30;
 const MONTH_NAMES     = ['January','February','March','April','May','June',
                          'July','August','September','October','November','December'];
@@ -714,8 +715,9 @@ function formatDateLabel(dateStr) {
   return `${weekdays[d.getDay()]}, ${MONTH_NAMES[month0]} ${day}`;
 }
 
-function getEligibleDates() {
-  const start = new Date(2026, 5, 22);
+function getEligibleDates(startStr) {
+  const [sy, sm, sd] = (startStr || START_DATE).split('-').map(Number);
+  const start = new Date(sy, sm - 1, sd);
   const end   = new Date();
   end.setHours(0, 0, 0, 0);
   const dates = [];
@@ -808,6 +810,29 @@ function getUserStats(userId) {
   };
 }
 
+function getBadgeStats(userId) {
+  const eligible = getEligibleDates(BADGE_START_DATE);
+  const todayStr = today();
+  let successDays = 0;
+  let totalMinutes = 0;
+  for (const d of eligible) {
+    const e = state.entries[d]?.[userId];
+    if (e) totalMinutes += e.minutes;
+    if (isSuccess(d, userId)) successDays++;
+  }
+  const totalEligible = eligible.length;
+  const successPct = totalEligible === 0 ? 0
+    : Math.round((successDays / totalEligible) * 100);
+  return {
+    successDays,
+    totalEligible,
+    totalMinutes,
+    successPct,
+    currentStreak: getCurrentStreak(userId, eligible, todayStr),
+    longestStreak: getLongestStreak(userId, eligible),
+  };
+}
+
 function getCurrentStreak(userId, eligible, todayStr) {
   if (!eligible.length) return 0;
   let i = eligible.length - 1;
@@ -845,7 +870,9 @@ const BADGE_DEFS = [
     name: 'First Move',
     desc: 'Logged your very first workout!',
     check: (s, userId) =>
-      Object.values(state.entries).some(day => day[userId]),
+      Object.entries(state.entries)
+        .filter(([date]) => date >= BADGE_START_DATE)
+        .some(([, day]) => day[userId]),
   },
   {
     id: 'hat_trick',
@@ -895,10 +922,12 @@ const BADGE_DEFS = [
     name: 'Early Bird',
     desc: 'Logged a workout before 9am',
     check: (s, userId) =>
-      Object.values(state.entries).some(day => {
-        const e = day[userId];
-        return e && new Date(e.ts).getHours() < 9;
-      }),
+      Object.entries(state.entries)
+        .filter(([date]) => date >= BADGE_START_DATE)
+        .some(([, day]) => {
+          const e = day[userId];
+          return e && new Date(e.ts).getHours() < 9;
+        }),
   },
   {
     id: 'comeback_kid',
@@ -906,7 +935,7 @@ const BADGE_DEFS = [
     name: 'Comeback Kid',
     desc: 'Returned after missing 3+ days in a row',
     check: (s, userId) => {
-      const eligible = getEligibleDates();
+      const eligible = getEligibleDates(BADGE_START_DATE);
       let misses = 0;
       for (const d of eligible) {
         if (!isSuccess(d, userId)) {
@@ -921,8 +950,9 @@ const BADGE_DEFS = [
   },
 ];
 
-function getEarnedBadges(stats, userId) {
-  return BADGE_DEFS.filter(b => b.check(stats, userId));
+function getEarnedBadges(userId) {
+  const s = getBadgeStats(userId);
+  return BADGE_DEFS.filter(b => b.check(s, userId));
 }
 
 // ═══════════════════════════════════════════
@@ -998,7 +1028,7 @@ function renderAll() {
 function renderScoreboard() {
   ['dag', 'eva'].forEach(uid => {
     const s = getUserStats(uid);
-    const earnedBadges = getEarnedBadges(s, uid);
+    const earnedBadges = getEarnedBadges(uid);
     const lockedCount  = BADGE_DEFS.length - earnedBadges.length;
 
     document.getElementById(`bar-${uid}`).style.width = `${s.successPct}%`;
@@ -1185,6 +1215,9 @@ function closeModal() {
   document.body.style.overflow = '';
   state.selectedDate = null;
   state.selectedUser = null;
+  const btn = document.getElementById('save-btn');
+  btn.textContent = '💾 Save';
+  btn.disabled = false;
 }
 
 async function doSave() {
