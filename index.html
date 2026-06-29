@@ -740,7 +740,7 @@ function pick(arr) {
 //  FIREBASE
 // ═══════════════════════════════════════════
 function isPlaceholderConfig() {
-  return FIREBASE_CONFIG.apiKey === '$FIREBASE_API_KEY';
+  return FIREBASE_CONFIG.apiKey.includes(FIREBASE_API_KEY);
 }
 
 let db = null;
