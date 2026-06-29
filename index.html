@@ -2,273 +2,653 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🔥 7-Day Blaze Challenge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#fff9f5">
+  <title>SportySpice 🌶️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --bg: #0d0d0d;
-      --surface: #1a1a1a;
-      --eva: #ff6b2b;
-      --dag: #00c9a7;
-      --gold: #ffd700;
-      --dim: #2a2a2a;
-      --text: #f0f0f0;
-      --muted: rgba(240,240,240,0.4);
+      --dag: #4f8ef7;
+      --dag-light: #e8f1fe;
+      --dag-dark: #1a4baa;
+      --eva: #f76f8e;
+      --eva-light: #fde8ec;
+      --eva-dark: #a01040;
+      --success: #4caf7d;
+      --bg: #fff9f5;
+      --card: #ffffff;
+      --text: #2d2d2d;
+      --muted: #999;
+      --border: #ebebeb;
+      --radius: 18px;
+      --radius-sm: 10px;
+      --shadow: 0 2px 20px rgba(0,0,0,0.07);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    html { scroll-behavior: smooth; }
+
     body {
+      font-family: 'Nunito', sans-serif;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
       min-height: 100vh;
-      padding-bottom: 2rem;
+      padding-bottom: 48px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #app {
       max-width: 480px;
       margin: 0 auto;
+      padding: 0 14px;
     }
+
+    /* ── HEADER ── */
     header {
       text-align: center;
-      padding: 1.5rem 1rem 0.75rem;
+      padding: 22px 0 14px;
     }
     header h1 {
-      font-size: 1.25rem;
+      font-size: 1.9rem;
       font-weight: 900;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      line-height: 1.3;
+      letter-spacing: -0.5px;
     }
-    header p {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-top: 0.25rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-    }
-
-    /* ── Thermometers ── */
-    .thermometers {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      padding: 1.25rem 1rem 1rem;
-    }
-    .player-thermo {
-      flex: 1;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .player-name {
-      font-size: 1.05rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 0.5rem;
-    }
-    .player-name.eva { color: var(--eva); }
-    .player-name.dag { color: var(--dag); }
-    .flame-top { font-size: 2rem; margin-bottom: 4px; line-height: 1; }
-    .flame-column {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      align-items: center;
-    }
-    .flame-segment {
-      width: 48px;
-      height: 34px;
-      border-radius: 8px;
-      background: var(--dim);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.2s ease;
-    }
-    .flame-segment.lit.eva {
-      background: linear-gradient(135deg, #ff4500, #ff6b2b, #ffd700);
-      box-shadow: 0 0 14px rgba(255,107,43,0.65);
-      transform: scaleX(1.05);
-    }
-    .flame-segment.lit.dag {
-      background: linear-gradient(135deg, #007a5e, #00c9a7, #7fffd4);
-      box-shadow: 0 0 14px rgba(0,201,167,0.65);
-      transform: scaleX(1.05);
-    }
-    .score-label {
-      margin-top: 0.5rem;
-      font-size: 0.85rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      color: var(--muted);
-    }
-
-    /* ── Day rows ── */
-    .day-log { padding: 0 0.75rem; }
-    .day-log-header {
-      display: grid;
-      grid-template-columns: 1.8fr 2.5fr 2.5fr;
-      gap: 0.5rem;
-      padding: 0.4rem 0.5rem;
-      font-size: 0.7rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      border-bottom: 1px solid #222;
-      margin-bottom: 0.4rem;
-    }
-    .day-row {
-      display: grid;
-      grid-template-columns: 1.8fr 2.5fr 2.5fr;
-      gap: 0.5rem;
-      padding: 0.35rem 0.5rem;
-      border-radius: 10px;
-      margin-bottom: 0.35rem;
-      align-items: center;
-    }
-    .day-row.today { background: var(--surface); }
-    .day-label { display: flex; flex-direction: column; line-height: 1.2; }
-    .day-label .num { font-size: 0.9rem; font-weight: 800; }
-    .day-label .wday { font-size: 0.72rem; color: var(--muted); font-weight: 600; }
-    .player-cell {
-      border-radius: 8px;
-      padding: 0.45rem 0.4rem;
-      text-align: center;
-      cursor: pointer;
+    .subtitle {
       font-size: 0.82rem;
-      font-weight: 800;
-      transition: background 0.15s, transform 0.1s;
-      min-height: 42px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* ── SCOREBOARD ── */
+    #scoreboard {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 6px;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px 10px;
+      box-shadow: var(--shadow);
+      margin-bottom: 10px;
+    }
+
+    .user-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .user-avatar { font-size: 1.9rem; line-height: 1; }
+
+    .user-name {
+      font-weight: 900;
+      font-size: 1rem;
+    }
+
+    .progress-wrap {
+      width: 100%;
+      height: 9px;
+      background: #f0f0f0;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      border-radius: 99px;
+      width: 0%;
+      transition: width 0.7s cubic-bezier(0.34, 1.4, 0.64, 1);
+    }
+    .progress-bar.dag { background: linear-gradient(90deg, #4f8ef7, #87b5ff); }
+    .progress-bar.eva { background: linear-gradient(90deg, #f76f8e, #f9a8b8); }
+
+    .pct-label {
+      font-weight: 900;
+      font-size: 1.15rem;
+      line-height: 1;
+    }
+    .pct-label.dag { color: var(--dag); }
+    .pct-label.eva { color: var(--eva); }
+
+    .days-label {
+      font-size: 0.68rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .streak-info {
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-weight: 700;
+      text-align: center;
+    }
+    .streak-info.hot { color: #e5680a; }
+
+    .badges-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 3px;
+      min-height: 22px;
+    }
+
+    .badge-chip {
+      font-size: 1rem;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.15s;
+      line-height: 1;
+      padding: 1px;
+    }
+    .badge-chip:active { transform: scale(1.35); }
+    .badge-locked-hint {
+      font-size: 0.65rem;
+      color: var(--muted);
+      font-weight: 700;
+      align-self: center;
+    }
+
+    .vs-divider {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-weight: 900;
+      font-size: 0.75rem;
+      color: #ccc;
+      gap: 2px;
+      padding: 0 4px;
+    }
+
+    /* ── BANNER ── */
+    #motivation-banner {
+      min-height: 46px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid transparent;
+      margin-bottom: 10px;
     }
-    .player-cell:active:not(.future) { transform: scale(0.96); }
-    .player-cell.eva {
-      background: rgba(255,107,43,0.08);
-      color: var(--eva);
-      border-color: rgba(255,107,43,0.2);
-    }
-    .player-cell.dag {
-      background: rgba(0,201,167,0.08);
-      color: var(--dag);
-      border-color: rgba(0,201,167,0.2);
-    }
-    .player-cell.complete.eva { background: rgba(255,107,43,0.22); border-color: var(--eva); }
-    .player-cell.complete.dag { background: rgba(0,201,167,0.22); border-color: var(--dag); }
-    .player-cell.future { opacity: 0.25; cursor: default; pointer-events: none; }
 
-    /* ── Log input ── */
-    .input-wrapper {
-      display: none;
-      grid-column: 1 / -1;
-    }
-    .input-wrapper.active {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-      padding: 0.4rem 0;
-    }
-    .input-wrapper input[type=number] {
-      flex: 1;
-      background: var(--surface);
-      border: 2px solid #333;
-      border-radius: 8px;
-      color: var(--text);
-      font-size: 1.1rem;
-      font-weight: 800;
-      padding: 0.5rem 0.5rem;
-      outline: none;
-      text-align: center;
-      -moz-appearance: textfield;
-    }
-    .input-wrapper input[type=number]::-webkit-inner-spin-button,
-    .input-wrapper input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
-    .input-wrapper input[type=number]:focus { border-color: var(--gold); }
-    .save-btn {
-      background: var(--gold);
-      color: #000;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 900;
-      padding: 0.5rem 0.9rem;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .cancel-btn {
-      background: #2a2a2a;
-      color: var(--text);
-      border: none;
-      border-radius: 8px;
-      font-size: 0.95rem;
+    .banner-pill {
+      display: inline-block;
+      padding: 9px 16px;
+      border-radius: 99px;
       font-weight: 700;
-      padding: 0.5rem 0.6rem;
-      cursor: pointer;
+      font-size: 0.83rem;
+      text-align: center;
+      line-height: 1.4;
+      animation: popIn 0.4s cubic-bezier(0.34, 1.5, 0.64, 1);
+      max-width: 340px;
+    }
+    .banner-pill.neutral  { background: #f0f0f0; color: #555; }
+    .banner-pill.tie      { background: #fff3cd; color: #7a5c00; }
+    .banner-pill.dag      { background: var(--dag-light); color: var(--dag-dark); }
+    .banner-pill.eva      { background: var(--eva-light); color: var(--eva-dark); }
+    .banner-pill.fire     { background: #fff0e6; color: #c45c00; }
+
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
     }
 
-    /* ── Confetti ── */
-    #confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 999; overflow: hidden; }
-    .confetti-piece {
-      position: absolute;
-      top: -16px;
-      border-radius: 2px;
-      animation: cffall linear forwards;
+    /* ── CALENDAR ── */
+    #calendar-section {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 14px 12px 16px;
+      box-shadow: var(--shadow);
     }
-    @keyframes cffall {
-      0%   { transform: translateY(0)     rotate(0deg);   opacity: 1; }
-      85%  { opacity: 1; }
-      100% { transform: translateY(110vh) rotate(800deg); opacity: 0; }
+
+    #calendar-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    #calendar-nav h2 {
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      transition: background 0.15s;
+      min-width: 44px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-btn:hover:not(:disabled) { background: #f0f0f0; }
+    .nav-btn:disabled { opacity: 0.25; cursor: default; }
+
+    #weekday-header {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      margin-bottom: 3px;
+    }
+    #weekday-header span {
+      text-align: center;
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: var(--muted);
+      padding: 2px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    #calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+    }
+
+    .day-cell {
+      aspect-ratio: 1;
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.1s;
+      background: #f6f6f6;
+      min-height: 40px;
+      position: relative;
+      gap: 2px;
+    }
+    .day-cell:active { transform: scale(0.9); }
+
+    .day-cell.empty {
+      background: transparent;
+      cursor: default;
+      pointer-events: none;
+    }
+    .day-cell.before-start,
+    .day-cell.future {
+      opacity: 0.3;
+      cursor: default;
+      pointer-events: none;
+    }
+    .day-cell.today {
+      box-shadow: 0 0 0 2.5px var(--success);
+    }
+    .day-cell.today .day-num { color: var(--success); }
+
+    .day-cell.has-dag     { background: var(--dag-light); }
+    .day-cell.has-eva     { background: var(--eva-light); }
+    .day-cell.has-both    { background: linear-gradient(135deg, var(--dag-light) 50%, var(--eva-light) 50%); }
+
+    .day-num {
+      font-size: 0.78rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .day-dots {
+      display: flex;
+      gap: 2px;
+      align-items: center;
+    }
+    .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+    }
+    .dot.dag-solid { background: var(--dag); }
+    .dot.eva-solid { background: var(--eva); }
+    .dot.dag-ring  { border: 1.5px solid var(--dag); background: transparent; }
+    .dot.eva-ring  { border: 1.5px solid var(--eva); background: transparent; }
+
+    /* ── MODAL ── */
+    #modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 100;
+      backdrop-filter: blur(2px);
+    }
+    #modal-overlay.hidden { display: none; }
+
+    #modal-card {
+      background: var(--card);
+      border-radius: 24px 24px 0 0;
+      padding: 20px 20px 44px;
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      animation: slideUp 0.28s cubic-bezier(0.34, 1.2, 0.64, 1);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(60%); opacity: 0.5; }
+      to   { transform: translateY(0);   opacity: 1; }
+    }
+
+    #modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: #f0f0f0;
+      border: none;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #666;
+    }
+    #modal-close:active { background: #e0e0e0; }
+
+    #modal-date {
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      padding-right: 40px;
+    }
+
+    #existing-entries {
+      margin-bottom: 12px;
+    }
+    .existing-entry {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 5px;
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+    .existing-entry.dag { background: var(--dag-light); color: var(--dag-dark); }
+    .existing-entry.eva { background: var(--eva-light); color: var(--eva-dark); }
+    .existing-entry .edit-hint {
+      margin-left: auto;
+      font-size: 0.72rem;
+      opacity: 0.6;
+    }
+
+    .modal-prompt {
+      font-weight: 800;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+    }
+
+    .user-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .user-btn {
+      padding: 18px 8px;
+      border-radius: var(--radius);
+      border: 3px solid transparent;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .user-btn[data-user="dag"] { background: var(--dag-light); color: var(--dag-dark); }
+    .user-btn[data-user="eva"] { background: var(--eva-light); color: var(--eva-dark); }
+    .user-btn:active { transform: scale(0.95); }
+
+    #form-user-label {
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+      color: var(--muted);
+    }
+
+    .minutes-row {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 6px;
+    }
+    .delta-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: #f0f0f0;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: background 0.1s;
+      min-height: 44px;
+    }
+    .delta-btn:active { background: #ddd; }
+
+    #minutes-input {
+      width: 68px;
+      text-align: center;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      border: 2.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 6px 2px;
+      flex-shrink: 0;
+      color: var(--text);
+    }
+    #minutes-input:focus { outline: none; border-color: var(--dag); }
+
+    .hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+
+    .form-actions {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px;
+    }
+    #back-btn {
+      padding: 14px 14px;
+      border-radius: var(--radius);
+      border: 2px solid var(--border);
+      background: white;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.88rem;
+      color: var(--muted);
+      min-height: 50px;
+    }
+    #save-btn {
+      padding: 14px;
+      border-radius: var(--radius);
+      border: none;
+      background: linear-gradient(135deg, var(--dag), var(--eva));
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+      min-height: 50px;
+    }
+    #save-btn:active { transform: scale(0.97); opacity: 0.9; }
+
+    .hidden { display: none !important; }
+
+    /* ── BADGE TOOLTIP ── */
+    #badge-tooltip {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2d2d2d;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 14px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-align: center;
+      z-index: 300;
+      animation: popIn 0.25s cubic-bezier(0.34, 1.5, 0.64, 1);
+      max-width: 260px;
+      pointer-events: none;
+      line-height: 1.4;
+    }
+
+    /* ── FIREBASE ERROR BANNER ── */
+    #firebase-error {
+      background: #fff0e6;
+      color: #c45c00;
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    /* ── LOADING ── */
+    #loading {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 340px) {
+      .day-cell { min-height: 34px; }
+      .day-num  { font-size: 0.7rem; }
     }
   </style>
 </head>
 <body>
+<div id="app">
+
   <header>
-    <h1>🔥 7-Day Blaze 🔥</h1>
-    <p>30 minutes · every day · 7 days</p>
+    <h1>🌶️ SportySpice</h1>
+    <p class="subtitle">30 minutes a day keeps the couch away</p>
   </header>
 
-  <section class="thermometers">
-    <div class="player-thermo" id="thermo-eva">
-      <!-- rendered by renderThermometer() -->
+  <div id="firebase-error" class="hidden">
+    ⚠️ Firebase not configured yet. Open <strong>index.html</strong> in a text editor and replace the <code>FIREBASE_CONFIG</code> placeholder with your project credentials.
+  </div>
+
+  <div id="loading">⏳ Loading...</div>
+
+  <div id="main-content" class="hidden">
+
+    <!-- Scoreboard -->
+    <section id="scoreboard">
+      <div class="user-card" id="card-dag">
+        <div class="user-avatar">🧔</div>
+        <div class="user-name">Dag</div>
+        <div class="progress-wrap">
+          <div class="progress-bar dag" id="bar-dag"></div>
+        </div>
+        <div class="pct-label dag" id="pct-dag">0%</div>
+        <div class="days-label" id="days-dag">0/0 days</div>
+        <div class="streak-info" id="streak-dag">🔥 0 day streak</div>
+        <div class="badges-row" id="badges-dag"></div>
+      </div>
+
+      <div class="vs-divider">⚡<br>VS<br>⚡</div>
+
+      <div class="user-card" id="card-eva">
+        <div class="user-avatar">🙋‍♀️</div>
+        <div class="user-name">Eva</div>
+        <div class="progress-wrap">
+          <div class="progress-bar eva" id="bar-eva"></div>
+        </div>
+        <div class="pct-label eva" id="pct-eva">0%</div>
+        <div class="days-label" id="days-eva">0/0 days</div>
+        <div class="streak-info" id="streak-eva">🔥 0 day streak</div>
+        <div class="badges-row" id="badges-eva"></div>
+      </div>
+    </section>
+
+    <!-- Motivation Banner -->
+    <div id="motivation-banner"></div>
+
+    <!-- Calendar -->
+    <section id="calendar-section">
+      <div id="calendar-nav">
+        <button id="prev-month" class="nav-btn" aria-label="Previous month">◀</button>
+        <h2 id="month-label"></h2>
+        <button id="next-month" class="nav-btn" aria-label="Next month">▶</button>
+      </div>
+      <div id="weekday-header">
+        <span>Mon</span><span>Tue</span><span>Wed</span>
+        <span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+      </div>
+      <div id="calendar-grid"></div>
+    </section>
+
+  </div><!-- /main-content -->
+</div><!-- /app -->
+
+<!-- Entry Modal -->
+<div id="modal-overlay" class="hidden" role="dialog" aria-modal="true">
+  <div id="modal-card">
+    <button id="modal-close" aria-label="Close">✕</button>
+    <h3 id="modal-date"></h3>
+    <div id="existing-entries"></div>
+
+    <div id="user-selector">
+      <p class="modal-prompt">Who are you?</p>
+      <div class="user-btns">
+        <button class="user-btn" data-user="dag">🧔 Dag</button>
+        <button class="user-btn" data-user="eva">🙋‍♀️ Eva</button>
+      </div>
     </div>
-    <div class="player-thermo" id="thermo-dag">
-      <!-- rendered by renderThermometer() -->
+
+    <div id="entry-form" class="hidden">
+      <p id="form-user-label"></p>
+      <div class="minutes-row">
+        <button class="delta-btn" data-delta="-10">−10</button>
+        <button class="delta-btn" data-delta="-5">−5</button>
+        <input type="number" id="minutes-input" min="0" max="999" value="30">
+        <button class="delta-btn" data-delta="5">+5</button>
+        <button class="delta-btn" data-delta="10">+10</button>
+      </div>
+      <p class="hint">30+ min = ✅ success for today!</p>
+      <div class="form-actions">
+        <button id="back-btn">← Back</button>
+        <button id="save-btn">💾 Save</button>
+      </div>
     </div>
-  </section>
+  </div>
+</div>
 
-  <section class="day-log">
-    <div class="day-log-header">
-      <span></span>
-      <span>Eva</span>
-      <span>Dag</span>
-    </div>
-    <div id="day-rows">
-      <!-- rendered by renderDayRows() -->
-    </div>
-  </section>
+<!-- Badge Tooltip -->
+<div id="badge-tooltip" class="hidden"></div>
 
-  <div id="confetti-container"></div>
-
-  <!-- Firebase SDK — compat mode (v8-style API) -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-
-  <script>
-    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    // STEP 1 ▸ Paste your Firebase config here
-    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    // How to get this config:
-    //   1. Go to https://console.firebase.google.com
-    //   2. Create a project (or use an existing one)
-    //   3. Add a Web app (</> icon)
-    //   4. Copy the firebaseConfig object shown
-    //   5. Enable Realtime Database → start in TEST MODE
-    //   6. Replace the placeholder values below
-
-    const firebaseConfig = {
+<script type="module">
+// ─────────────────────────────────────────────
+// ⚠️  REPLACE THIS with your Firebase config
+//     from: Firebase Console → Project Settings → Your apps
+// ─────────────────────────────────────────────
+const FIREBASE_CONFIG = {
       apiKey:            "$FIREBASE_API_KEY",
       authDomain:        "$FIREBASE_AUTH_DOMAIN",
       databaseURL:       "$FIREBASE_DATABASE_URL",
@@ -276,218 +656,645 @@
       storageBucket:     "$FIREBASE_STORAGE_BUCKET",
       messagingSenderId: "$FIREBASE_MESSAGING_SENDER_ID",
       appId:             "$FIREBASE_APP_ID"
-    };
-    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+};
 
-    // STEP 2 ▸ Set the challenge start date
-    const CHALLENGE_START = '2026-06-22';
+import { initializeApp }              from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getDatabase, ref, onValue, set }
+                                       from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-    // ── Firebase ──────────────────────────────────────────
-    let db;
+// ═══════════════════════════════════════════
+//  CONSTANTS
+// ═══════════════════════════════════════════
+const START_DATE      = '2026-06-22';
+const SUCCESS_MIN     = 30;
+const MONTH_NAMES     = ['January','February','March','April','May','June',
+                         'July','August','September','October','November','December'];
+const USER_META = {
+  dag: { name: 'Dag', emoji: '🧔' },
+  eva: { name: 'Eva', emoji: '🙋‍♀️' },
+};
 
-    function initFirebase() {
-      if (firebaseConfig.apiKey.startsWith('$') || firebaseConfig.apiKey.startsWith('PASTE_')) {
-        document.body.innerHTML = '<div style="color:#ffd700;font-family:system-ui;text-align:center;padding:3rem 2rem;font-size:1.1rem;font-weight:700">⚙️ Setup required<br><br><span style="font-weight:400;font-size:0.9rem;color:#aaa">Open index.html and paste your<br>Firebase project config.</span></div>';
-        return false;
-      }
-      firebase.initializeApp(firebaseConfig);
-      db = firebase.database();
-      db.ref('startDate').once('value').then(snap => {
-        if (!snap.val()) db.ref('startDate').set(CHALLENGE_START);
-      });
-      return true;
-    }
+// ═══════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════
+const state = {
+  entries:      {},     // { 'YYYY-MM-DD': { dag?: {minutes,ts}, eva?: {minutes,ts} } }
+  currentMonth: { year: 2026, month: 5 },   // 0-indexed month
+  selectedDate: null,
+  selectedUser: null,
+};
 
-    function normalizeData(raw) {
-      const out = { startDate: raw.startDate || CHALLENGE_START, eva: {}, dag: {} };
-      for (let d = 1; d <= 7; d++) {
-        out.eva[d] = raw.eva  ? Number(raw.eva[d]  || 0) : 0;
-        out.dag[d] = raw.dag  ? Number(raw.dag[d]  || 0) : 0;
-      }
-      return out;
-    }
+let lastBannerKey = '';
+let lastBannerHtml = '';
+let badgeTooltipTimer = null;
 
-    function subscribeToData(callback) {
-      db.ref('/').on('value', snap => callback(normalizeData(snap.val() || {})), err => {
-        console.error('Firebase connection failed:', err);
-        document.getElementById('day-rows').innerHTML = '<p style="color:#ff6b2b;text-align:center;padding:1rem">Connection error — check Firebase config</p>';
-      });
-    }
+// ═══════════════════════════════════════════
+//  UTILITIES
+// ═══════════════════════════════════════════
+function today() {
+  const d = new Date();
+  return fmtDate(d.getFullYear(), d.getMonth(), d.getDate());
+}
 
-    function logMinutes(player, day, minutes) {
-      db.ref(`${player}/${day}`).set(Number(minutes));
-    }
+function fmtDate(year, month0, day) {
+  // month0 is 0-indexed
+  return `${year}-${String(month0 + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+}
 
-    // ── Helpers ───────────────────────────────────────────
-    function completedCount(playerData) {
-      return Object.values(playerData).filter(m => m >= 30).length;
-    }
+function parseDate(str) {
+  // Returns { year, month0, day }
+  const [y, m, d] = str.split('-').map(Number);
+  return { year: y, month0: m - 1, day: d };
+}
 
-    function getDayLabel(startDate, dayIndex) {
-      const [y, m, d] = startDate.split('-').map(Number);
-      const date = new Date(y, m - 1, d);
-      date.setDate(date.getDate() + dayIndex - 1);
-      return date.toLocaleDateString('en-US', { weekday: 'short' });
-    }
+function formatDateLabel(dateStr) {
+  const { year, month0, day } = parseDate(dateStr);
+  const d = new Date(year, month0, day);
+  const weekdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  return `${weekdays[d.getDay()]}, ${MONTH_NAMES[month0]} ${day}`;
+}
 
-    function getCurrentDay(startDate) {
-      const [y, m, d] = startDate.split('-').map(Number);
-      const start = new Date(y, m - 1, d);
-      const today = new Date(); today.setHours(0, 0, 0, 0);
-      return Math.floor((today - start) / 86400000) + 1; // can be ≤0 or ≥8
-    }
+function getEligibleDates() {
+  const start = new Date(2026, 5, 22);
+  const end   = new Date();
+  end.setHours(0, 0, 0, 0);
+  const dates = [];
+  const cur = new Date(start);
+  while (cur <= end) {
+    dates.push(fmtDate(cur.getFullYear(), cur.getMonth(), cur.getDate()));
+    cur.setDate(cur.getDate() + 1);
+  }
+  return dates;
+}
 
-    // ── Thermometer ───────────────────────────────────────
-    function renderThermometer(player, playerData) {
-      const done = completedCount(playerData);
-      // Build segments top→bottom (day 7 at top, day 1 at bottom)
-      const segments = Array.from({ length: 7 }, (_, i) => {
-        const day = 7 - i; // i=0 → day 7 (top), i=6 → day 1 (bottom)
-        const lit = playerData[day] >= 30;
-        return `<div class="flame-segment${lit ? ` lit ${player}` : ''}">${lit ? '🔥' : ''}</div>`;
-      }).join('');
+function isSuccess(dateStr, userId) {
+  const e = state.entries[dateStr]?.[userId];
+  return e && e.minutes >= SUCCESS_MIN;
+}
 
-      document.getElementById(`thermo-${player}`).innerHTML = `
-        <div class="player-name ${player}">${player === 'eva' ? 'Eva' : 'Dag'}</div>
-        <div class="flame-top">${done === 7 ? '🏆' : '🔥'}</div>
-        <div class="flame-column">${segments}</div>
-        <div class="score-label">${done}/7 days</div>
-      `;
-    }
+function pick(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
 
-    // ── Day rows ──────────────────────────────────────────
-    let activeInput = null; // { player: 'eva'|'dag', day: number }
+// ═══════════════════════════════════════════
+//  FIREBASE
+// ═══════════════════════════════════════════
+function isPlaceholderConfig() {
+  return FIREBASE_CONFIG.apiKey === '$FIREBASE_API_KEY';
+}
 
-    function renderDayRows(data) {
-      window._lastData = data;
-      const today = getCurrentDay(data.startDate);
+let db = null;
 
-      // Preserve any value the user is currently typing
-      let pendingValue = '';
-      if (activeInput) {
-        const currentInput = document.getElementById('min-input-' + activeInput.day);
-        if (currentInput) pendingValue = currentInput.value;
-      }
+function initFirebase() {
+  if (isPlaceholderConfig()) {
+    document.getElementById('firebase-error').classList.remove('hidden');
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('main-content').classList.remove('hidden');
+    renderAll();
+    return;
+  }
+  try {
+    const app = initializeApp(FIREBASE_CONFIG);
+    db = getDatabase(app);
+    onValue(ref(db, 'entries'), snap => {
+      state.entries = snap.val() || {};
+      document.getElementById('loading').classList.add('hidden');
+      document.getElementById('main-content').classList.remove('hidden');
+      renderAll();
+    }, err => {
+      console.error('Firebase read error:', err);
+      document.getElementById('loading').textContent = '❌ Could not connect to database.';
+    });
+  } catch (e) {
+    console.error('Firebase init error:', e);
+    document.getElementById('loading').textContent = '❌ Firebase config error. Check the console.';
+  }
+}
 
-      const banner = today < 1
-        ? `<div style="text-align:center;color:#ffd700;padding:0.75rem;font-weight:700;font-size:0.9rem">🗓️ Challenge starts ${getDayLabel(data.startDate, 1)} (Day 1)</div>`
-        : today > 7
-        ? `<div style="text-align:center;color:#ffd700;padding:0.75rem;font-weight:700;font-size:0.9rem">🏁 Challenge complete!</div>`
-        : '';
+async function saveEntry(dateStr, userId, minutes) {
+  if (!db) return;
+  await set(ref(db, `entries/${dateStr}/${userId}`), {
+    minutes,
+    ts: Date.now(),
+  });
+}
 
-      const displayCount = today < 1 ? 0 : Math.min(today, 7);
-      const rows = Array.from({ length: displayCount }, (_, i) => {
-        const day = displayCount - i; // reverse: today first, Day 1 last
-        const isToday  = day === today && today >= 1 && today <= 7;
-        const weekday  = getDayLabel(data.startDate, day);
+// ═══════════════════════════════════════════
+//  COMPUTED STATS
+// ═══════════════════════════════════════════
+function getUserStats(userId) {
+  const eligible = getEligibleDates();
+  const todayStr = today();
+  let successDays = 0;
+  let totalMinutes = 0;
 
-        const eMin = data.eva[day]; const dMin = data.dag[day];
-        const eLabel = eMin >= 30 ? `✅ ${eMin}m` : eMin > 0 ? `${eMin}m` : 'tap';
-        const dLabel = dMin >= 30 ? `✅ ${dMin}m` : dMin > 0 ? `${dMin}m` : 'tap';
+  for (const d of eligible) {
+    const e = state.entries[d]?.[userId];
+    if (e) totalMinutes += e.minutes;
+    if (isSuccess(d, userId)) successDays++;
+  }
 
-        const showEInput = activeInput && activeInput.player === 'eva' && activeInput.day === day;
-        const showDInput = activeInput && activeInput.player === 'dag' && activeInput.day === day;
-        const showInput  = showEInput || showDInput;
-        const inputPlayer = showEInput ? 'eva' : 'dag';
-        const inputCurrent = showEInput ? eMin : dMin;
+  const totalEligible = eligible.length;
+  const successPct = totalEligible === 0 ? 0
+    : Math.round((successDays / totalEligible) * 100);
 
-        return `
-          <div class="day-row${isToday ? ' today' : ''}">
-            <div class="day-label">
-              <span class="num">Day ${day}</span>
-              <span class="wday">${weekday}</span>
-            </div>
-            <div class="player-cell eva${eMin >= 30 ? ' complete' : ''}"
-                 onclick="openLogInput('eva',${day})">${eLabel}</div>
-            <div class="player-cell dag${dMin >= 30 ? ' complete' : ''}"
-                 onclick="openLogInput('dag',${day})">${dLabel}</div>
-            <div class="input-wrapper${showInput ? ' active' : ''}" id="iw-${day}">
-              <input type="number" id="min-input-${day}" min="0" max="999" placeholder="minutes"
-                     value="${inputCurrent > 0 ? inputCurrent : ''}">
-              <button class="save-btn"   onclick="saveMinutes('${inputPlayer}',${day})">Save</button>
-              <button class="cancel-btn" onclick="closeInput()">✕</button>
-            </div>
-          </div>`;
-      }).join('');
+  return {
+    successDays,
+    totalEligible,
+    totalMinutes,
+    successPct,
+    currentStreak: getCurrentStreak(userId, eligible, todayStr),
+    longestStreak: getLongestStreak(userId, eligible),
+  };
+}
 
-      document.getElementById('day-rows').innerHTML = banner + rows;
+function getCurrentStreak(userId, eligible, todayStr) {
+  if (!eligible.length) return 0;
+  let i = eligible.length - 1;
 
-      if (activeInput && pendingValue !== '') {
-        const inp = document.getElementById('min-input-' + activeInput.day);
-        if (inp) inp.value = pendingValue;
-      }
+  // If today hasn't been logged successfully, skip today
+  if (eligible[i] === todayStr && !isSuccess(todayStr, userId)) {
+    i--;
+  }
 
-      if (activeInput) {
-        const inp = document.getElementById('min-input-' + activeInput.day);
-        if (inp) { inp.focus(); inp.select(); }
-      }
-    }
+  let streak = 0;
+  for (; i >= 0; i--) {
+    if (isSuccess(eligible[i], userId)) streak++;
+    else break;
+  }
+  return streak;
+}
 
-    // ── Input handlers ────────────────────────────────────
-    function openLogInput(player, day) {
-      if (activeInput && activeInput.player === player && activeInput.day === day) {
-        activeInput = null; // toggle off
-      } else {
-        activeInput = { player, day };
-      }
-      if (window._lastData) renderDayRows(window._lastData);
-    }
+function getLongestStreak(userId, eligible) {
+  let longest = 0;
+  let cur = 0;
+  for (const d of eligible) {
+    if (isSuccess(d, userId)) { cur++; longest = Math.max(longest, cur); }
+    else cur = 0;
+  }
+  return longest;
+}
 
-    function closeInput() {
-      activeInput = null;
-      if (window._lastData) renderDayRows(window._lastData);
-    }
-
-    function saveMinutes(player, day) {
-      const input = document.getElementById('min-input-' + day);
-      if (!input) return;
-      const minutes = parseInt(input.value, 10);
-      if (!isNaN(minutes) && minutes >= 0) {
-        const prevDone = completedCount(window._lastData[player]);
-        logMinutes(player, day, minutes);
-        // check milestone BEFORE Firebase round-trip
-        const projected = Object.assign({}, window._lastData[player], { [day]: minutes });
-        if (completedCount(projected) === 7 && prevDone < 7) {
-          setTimeout(fireConfetti, 200);
+// ═══════════════════════════════════════════
+//  BADGES
+// ═══════════════════════════════════════════
+const BADGE_DEFS = [
+  {
+    id: 'first_move',
+    emoji: '🥇',
+    name: 'First Move',
+    desc: 'Logged your very first workout!',
+    check: (s, userId) =>
+      Object.values(state.entries).some(day => day[userId]),
+  },
+  {
+    id: 'hat_trick',
+    emoji: '🎩',
+    name: 'Hat-trick',
+    desc: '3 consecutive days of 30+ min',
+    check: (s) => s.longestStreak >= 3,
+  },
+  {
+    id: 'high_five',
+    emoji: '🖐️',
+    name: 'High Five',
+    desc: '5 consecutive days',
+    check: (s) => s.longestStreak >= 5,
+  },
+  {
+    id: 'perfect_ten',
+    emoji: '🔟',
+    name: 'Perfect Ten',
+    desc: '10 consecutive days',
+    check: (s) => s.longestStreak >= 10,
+  },
+  {
+    id: 'century',
+    emoji: '💯',
+    name: 'Century',
+    desc: '100 total minutes logged',
+    check: (s) => s.totalMinutes >= 100,
+  },
+  {
+    id: 'unstoppable',
+    emoji: '🚀',
+    name: 'Unstoppable',
+    desc: '300 total minutes',
+    check: (s) => s.totalMinutes >= 300,
+  },
+  {
+    id: 'legend',
+    emoji: '🏆',
+    name: 'Legend',
+    desc: '500 total minutes logged',
+    check: (s) => s.totalMinutes >= 500,
+  },
+  {
+    id: 'early_bird',
+    emoji: '🌅',
+    name: 'Early Bird',
+    desc: 'Logged a workout before 9am',
+    check: (s, userId) =>
+      Object.values(state.entries).some(day => {
+        const e = day[userId];
+        return e && new Date(e.ts).getHours() < 9;
+      }),
+  },
+  {
+    id: 'comeback_kid',
+    emoji: '💪',
+    name: 'Comeback Kid',
+    desc: 'Returned after missing 3+ days in a row',
+    check: (s, userId) => {
+      const eligible = getEligibleDates();
+      let misses = 0;
+      for (const d of eligible) {
+        if (!isSuccess(d, userId)) {
+          misses++;
+        } else {
+          if (misses >= 3) return true;
+          misses = 0;
         }
       }
-      activeInput = null;
-      // optimistic UI close — Firebase subscription will re-render with real data
-      if (window._lastData) renderDayRows(window._lastData);
+      return false;
+    },
+  },
+];
+
+function getEarnedBadges(stats, userId) {
+  return BADGE_DEFS.filter(b => b.check(stats, userId));
+}
+
+// ═══════════════════════════════════════════
+//  MOTIVATIONAL TEXT
+// ═══════════════════════════════════════════
+function getMotivationText(ds, es) {
+  const dp = ds.successPct, ep = es.successPct;
+  const diff = Math.abs(dp - ep);
+  const dStr = ds.currentStreak, eStr = es.currentStreak;
+  const bothZero = ds.totalMinutes === 0 && es.totalMinutes === 0;
+
+  if (bothZero) {
+    return pick([
+      { text: "🏁 The challenge begins! Who moves first?", type: 'neutral' },
+      { text: "👀 Two athletes. Zero excuses. LET'S GO!", type: 'neutral' },
+      { text: "💪 June 22 — your adventure starts now!", type: 'neutral' },
+    ]);
+  }
+
+  // Streak milestones (check highest first)
+  if (dStr >= 10) return { text: `👑 DAG IS UNSTOPPABLE! ${dStr} days straight!`, type: 'fire' };
+  if (eStr >= 10) return { text: `👑 EVA IS A LEGEND! ${eStr} days straight!`,   type: 'fire' };
+  if (dStr >= 5)  return { text: `🔥 ${dStr} in a row for Dag! Eva, the pressure is ON.`, type: 'fire' };
+  if (eStr >= 5)  return { text: `🔥 Eva's on FIRE — ${eStr} day streak! Dag, catch up!`, type: 'fire' };
+  if (dStr === 3) return { text: "🎩 Dag's on a hat-trick! Eva, he's warming up...", type: 'fire' };
+  if (eStr === 3) return { text: "🎩 Eva landed the hat-trick! Dag, you okay?", type: 'fire' };
+
+  // Tied
+  if (dp === ep && dp > 0) {
+    return pick([
+      { text: `⚡ ${dp}% each — perfectly tied! This is WAR.`, type: 'tie' },
+      { text: "🤝 Dead even. Someone blink first.", type: 'tie' },
+      { text: "😤 Same score... for now. Tick tock.", type: 'tie' },
+    ]);
+  }
+
+  // Dag leads
+  if (dp > ep) {
+    if (diff >= 20) return pick([
+      { text: `😏 Dag's crushing it at ${dp}%! Eva… you okay over there?`, type: 'dag' },
+      { text: `💨 Dag left the building — ${diff}% ahead. Eva, is the couch comfy?`, type: 'dag' },
+    ]);
+    return pick([
+      { text: `🏃 Dag nudges ahead at ${dp}%. Eva's right on his heels...`, type: 'dag' },
+      { text: `👀 Dag: ${dp}% | Eva: ${ep}%. Eva, want a head start? 😄`, type: 'dag' },
+    ]);
+  }
+
+  // Eva leads
+  if (ep > dp) {
+    if (diff >= 20) return pick([
+      { text: `💅 Eva at ${ep}%! Dag, the couch called — it misses you.`, type: 'eva' },
+      { text: `🌪️ Eva's ${diff}% ahead! Dag, this is getting embarrassing 😂`, type: 'eva' },
+    ]);
+    return pick([
+      { text: `🌟 Eva takes the lead! Dag: ${dp}%. Time to step it up!`, type: 'eva' },
+      { text: `😬 Eva: ${ep}% | Dag: ${dp}%. Dag, you're slipping, mate.`, type: 'eva' },
+    ]);
+  }
+
+  return { text: "💪 Keep pushing — every minute counts!", type: 'neutral' };
+}
+
+// ═══════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════
+function renderAll() {
+  renderScoreboard();
+  renderCalendar();
+  renderMotivationBanner();
+}
+
+function renderScoreboard() {
+  ['dag', 'eva'].forEach(uid => {
+    const s = getUserStats(uid);
+    const earnedBadges = getEarnedBadges(s, uid);
+    const lockedCount  = BADGE_DEFS.length - earnedBadges.length;
+
+    document.getElementById(`bar-${uid}`).style.width = `${s.successPct}%`;
+    document.getElementById(`pct-${uid}`).textContent = `${s.successPct}%`;
+    document.getElementById(`days-${uid}`).textContent =
+      `${s.successDays}/${s.totalEligible} days`;
+
+    const streakEl = document.getElementById(`streak-${uid}`);
+    if (s.currentStreak >= 3) {
+      streakEl.textContent = `🔥 ${s.currentStreak} day streak!`;
+      streakEl.classList.add('hot');
+    } else {
+      streakEl.textContent = s.currentStreak > 0
+        ? `🔥 ${s.currentStreak} day streak`
+        : '📅 No streak yet';
+      streakEl.classList.remove('hot');
     }
 
-    // ── Confetti ──────────────────────────────────────────
-    function fireConfetti() {
-      const container = document.getElementById('confetti-container');
-      const colors = ['#ff6b2b','#00c9a7','#ffd700','#ff4500','#7fffd4','#ff69b4','#fff'];
-      for (let i = 0; i < 90; i++) {
-        const el = document.createElement('div');
-        el.className = 'confetti-piece';
-        const size = 7 + Math.random() * 9;
-        el.style.cssText = `
-          left: ${Math.random() * 100}vw;
-          width: ${size}px; height: ${size}px;
-          background: ${colors[i % colors.length]};
-          border-radius: ${Math.random() > 0.45 ? '50%' : '2px'};
-          animation-duration: ${2 + Math.random() * 2.5}s;
-          animation-delay: ${Math.random() * 1.2}s;
-        `;
-        container.appendChild(el);
-        setTimeout(() => el.remove(), 4500);
-      }
+    const badgesRow = document.getElementById(`badges-${uid}`);
+    let html = earnedBadges
+      .map(b => `<span class="badge-chip" data-badge-id="${b.id}">${b.emoji}</span>`)
+      .join('');
+    if (lockedCount > 0) {
+      html += `<span class="badge-locked-hint">+${lockedCount} 🔒</span>`;
+    }
+    badgesRow.innerHTML = html;
+  });
+}
+
+function renderMotivationBanner() {
+  const ds = getUserStats('dag');
+  const es = getUserStats('eva');
+  const key = `${ds.successPct}:${es.successPct}:${ds.currentStreak}:${es.currentStreak}`;
+
+  if (key !== lastBannerKey) {
+    lastBannerKey = key;
+    const { text, type } = getMotivationText(ds, es);
+    lastBannerHtml = `<span class="banner-pill ${type}">${text}</span>`;
+  }
+
+  document.getElementById('motivation-banner').innerHTML = lastBannerHtml;
+}
+
+function renderCalendar() {
+  const { year, month } = state.currentMonth;
+  const todayStr = today();
+  const monthName = MONTH_NAMES[month];
+  document.getElementById('month-label').textContent = `${monthName} ${year}`;
+
+  // Nav button states
+  const prevBtn = document.getElementById('prev-month');
+  const nextBtn = document.getElementById('next-month');
+  prevBtn.disabled = year === 2026 && month === 5;
+  const now = new Date();
+  nextBtn.disabled = year === now.getFullYear() && month === now.getMonth();
+
+  // Build cells
+  const firstDay = new Date(year, month, 1);
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  // Mon=0 … Sun=6
+  const startOffset = (firstDay.getDay() + 6) % 7;
+
+  const grid = document.getElementById('calendar-grid');
+  grid.innerHTML = '';
+
+  // Empty padding cells before the 1st
+  for (let i = 0; i < startOffset; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'day-cell empty';
+    grid.appendChild(cell);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = fmtDate(year, month, d);
+    const cell = document.createElement('div');
+    cell.className = 'day-cell';
+    cell.dataset.date = dateStr;
+
+    const dayDate = new Date(year, month, d);
+
+    // Determine active state
+    const isBeforeStart = dateStr < START_DATE;
+    const isFuture      = dateStr > todayStr;
+    const isToday       = dateStr === todayStr;
+
+    if (isBeforeStart)   cell.classList.add('before-start');
+    else if (isFuture)   cell.classList.add('future');
+    else {
+      if (isToday) cell.classList.add('today');
+
+      const dagEntry = state.entries[dateStr]?.dag;
+      const evaEntry = state.entries[dateStr]?.eva;
+      const dagOk = dagEntry && dagEntry.minutes >= SUCCESS_MIN;
+      const evaOk = evaEntry && evaEntry.minutes >= SUCCESS_MIN;
+
+      if (dagOk && evaOk)  cell.classList.add('has-both');
+      else if (dagOk)      cell.classList.add('has-dag');
+      else if (evaOk)      cell.classList.add('has-eva');
+
+      cell.addEventListener('click', () => openModal(dateStr));
     }
 
-    // ── Boot ──────────────────────────────────────────────
-    function init() {
-      if (!initFirebase()) return;
-      subscribeToData(data => {
-        renderThermometer('eva', data.eva);
-        renderThermometer('dag', data.dag);
-        renderDayRows(data);
-      });
-    }
+    // Day number
+    const numEl = document.createElement('span');
+    numEl.className = 'day-num';
+    numEl.textContent = d;
+    cell.appendChild(numEl);
 
-    document.addEventListener('DOMContentLoaded', init);
-  </script>
+    // Dots
+    const dotsEl = document.createElement('div');
+    dotsEl.className = 'day-dots';
+    const dagEntry = state.entries[dateStr]?.dag;
+    const evaEntry = state.entries[dateStr]?.eva;
+
+    if (dagEntry) {
+      const dot = document.createElement('span');
+      dot.className = `dot ${dagEntry.minutes >= SUCCESS_MIN ? 'dag-solid' : 'dag-ring'}`;
+      dotsEl.appendChild(dot);
+    }
+    if (evaEntry) {
+      const dot = document.createElement('span');
+      dot.className = `dot ${evaEntry.minutes >= SUCCESS_MIN ? 'eva-solid' : 'eva-ring'}`;
+      dotsEl.appendChild(dot);
+    }
+    cell.appendChild(dotsEl);
+
+    grid.appendChild(cell);
+  }
+}
+
+// ═══════════════════════════════════════════
+//  MODAL
+// ═══════════════════════════════════════════
+function openModal(dateStr) {
+  state.selectedDate = dateStr;
+  state.selectedUser = null;
+
+  document.getElementById('modal-date').textContent = formatDateLabel(dateStr);
+
+  // Show existing entries
+  const existing = document.getElementById('existing-entries');
+  const dagEntry = state.entries[dateStr]?.dag;
+  const evaEntry = state.entries[dateStr]?.eva;
+  let existingHtml = '';
+  if (dagEntry) {
+    const ok = dagEntry.minutes >= SUCCESS_MIN ? '✅' : '⚠️';
+    existingHtml += `<div class="existing-entry dag">🧔 ${dagEntry.minutes} min ${ok}
+      <span class="edit-hint">tap to edit</span></div>`;
+  }
+  if (evaEntry) {
+    const ok = evaEntry.minutes >= SUCCESS_MIN ? '✅' : '⚠️';
+    existingHtml += `<div class="existing-entry eva">🙋‍♀️ ${evaEntry.minutes} min ${ok}
+      <span class="edit-hint">tap to edit</span></div>`;
+  }
+  existing.innerHTML = existingHtml;
+
+  // Show user selector, hide form
+  document.getElementById('user-selector').classList.remove('hidden');
+  document.getElementById('entry-form').classList.add('hidden');
+
+  document.getElementById('modal-overlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function selectUser(userId) {
+  state.selectedUser = userId;
+  const meta = USER_META[userId];
+
+  // Pre-fill minutes from existing entry or default 30
+  const existing = state.entries[state.selectedDate]?.[userId];
+  document.getElementById('minutes-input').value = existing ? existing.minutes : 30;
+
+  document.getElementById('form-user-label').textContent =
+    `${meta.emoji} ${meta.name}'s minutes for this day:`;
+
+  document.getElementById('user-selector').classList.add('hidden');
+  document.getElementById('entry-form').classList.remove('hidden');
+  document.getElementById('minutes-input').focus();
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.add('hidden');
+  document.body.style.overflow = '';
+  state.selectedDate = null;
+  state.selectedUser = null;
+}
+
+async function doSave() {
+  const minutes = parseInt(document.getElementById('minutes-input').value, 10);
+  if (isNaN(minutes) || minutes < 0) return;
+
+  const btn = document.getElementById('save-btn');
+  btn.textContent = '⏳ Saving...';
+  btn.disabled = true;
+
+  try {
+    if (db) {
+      await saveEntry(state.selectedDate, state.selectedUser, minutes);
+    } else {
+      // Demo mode (no Firebase config): write to local state only
+      if (!state.entries[state.selectedDate]) state.entries[state.selectedDate] = {};
+      state.entries[state.selectedDate][state.selectedUser] = { minutes, ts: Date.now() };
+      renderAll();
+    }
+    closeModal();
+  } catch (e) {
+    console.error('Save failed:', e);
+    btn.textContent = '❌ Failed — retry';
+    btn.disabled = false;
+  }
+}
+
+// ═══════════════════════════════════════════
+//  BADGE TOOLTIP
+// ═══════════════════════════════════════════
+function showBadgeTooltip(badgeId) {
+  const def = BADGE_DEFS.find(b => b.id === badgeId);
+  if (!def) return;
+
+  const el = document.getElementById('badge-tooltip');
+  el.textContent = `${def.emoji} ${def.name}: ${def.desc}`;
+  el.classList.remove('hidden');
+
+  clearTimeout(badgeTooltipTimer);
+  badgeTooltipTimer = setTimeout(() => el.classList.add('hidden'), 2500);
+}
+
+// ═══════════════════════════════════════════
+//  EVENT HANDLERS
+// ═══════════════════════════════════════════
+function attachEvents() {
+  document.getElementById('prev-month').addEventListener('click', () => {
+    let { year, month } = state.currentMonth;
+    month--;
+    if (month < 0) { month = 11; year--; }
+    state.currentMonth = { year, month };
+    renderCalendar();
+  });
+
+  document.getElementById('next-month').addEventListener('click', () => {
+    let { year, month } = state.currentMonth;
+    month++;
+    if (month > 11) { month = 0; year++; }
+    state.currentMonth = { year, month };
+    renderCalendar();
+  });
+
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+
+  document.getElementById('modal-overlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('modal-overlay')) closeModal();
+  });
+
+  document.querySelectorAll('.user-btn').forEach(btn => {
+    btn.addEventListener('click', () => selectUser(btn.dataset.user));
+  });
+
+  document.getElementById('back-btn').addEventListener('click', () => {
+    document.getElementById('entry-form').classList.add('hidden');
+    document.getElementById('user-selector').classList.remove('hidden');
+    state.selectedUser = null;
+  });
+
+  document.getElementById('save-btn').addEventListener('click', doSave);
+
+  document.querySelectorAll('.delta-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = document.getElementById('minutes-input');
+      const delta = parseInt(btn.dataset.delta, 10);
+      const cur   = parseInt(input.value, 10) || 0;
+      input.value = Math.max(0, Math.min(999, cur + delta));
+    });
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Enter' && !document.getElementById('modal-overlay').classList.contains('hidden')) {
+      if (!document.getElementById('entry-form').classList.contains('hidden')) doSave();
+    }
+  });
+
+  // Badge tooltip — delegated
+  document.addEventListener('click', e => {
+    const chip = e.target.closest('.badge-chip');
+    if (chip) showBadgeTooltip(chip.dataset.badgeId);
+  });
+}
+
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  attachEvents();
+  initFirebase();
+});
+</script>
 </body>
 </html>
