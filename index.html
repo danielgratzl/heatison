@@ -976,6 +976,15 @@ function getMotivationText(ds, es) {
     ]);
   }
 
+    // Tied
+  if (dp === ep && dp > 0) {
+    return pick([
+      { text: `⚡ ${dp}% each — perfectly tied! This is WAR.`, type: 'tie' },
+      { text: "🤝 Dead even. Someone blink first.", type: 'tie' },
+      { text: "😤 Same score... for now. Tick tock.", type: 'tie' },
+    ]);
+  }
+  
   // Streak milestones (check highest first)
   if (dStr >= 10) return { text: `👑 DAG IS UNSTOPPABLE! ${dStr} days straight!`, type: 'fire' };
   if (eStr >= 10) return { text: `👑 EVA IS A LEGEND! ${eStr} days straight!`,   type: 'fire' };
@@ -984,14 +993,7 @@ function getMotivationText(ds, es) {
   if (dStr === 3) return { text: "🎩 Dag's on a hat-trick! Eva, he's warming up...", type: 'fire' };
   if (eStr === 3) return { text: "🎩 Eva landed the hat-trick! Dag, you okay?", type: 'fire' };
 
-  // Tied
-  if (dp === ep && dp > 0) {
-    return pick([
-      { text: `⚡ ${dp}% each — perfectly tied! This is WAR.`, type: 'tie' },
-      { text: "🤝 Dead even. Someone blink first.", type: 'tie' },
-      { text: "😤 Same score... for now. Tick tock.", type: 'tie' },
-    ]);
-  }
+
 
   // Dag leads
   if (dp > ep) {
