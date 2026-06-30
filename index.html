@@ -377,9 +377,13 @@
       margin-bottom: 5px;
       font-weight: 700;
       font-size: 0.88rem;
+      cursor: pointer;
+      transition: transform 0.1s;
     }
+    .existing-entry:active { transform: scale(0.97); }
     .existing-entry.dag { background: var(--dag-light); color: var(--dag-dark); }
     .existing-entry.eva { background: var(--eva-light); color: var(--eva-dark); }
+    .existing-entry.no-entry { background: #f0f0f0; color: var(--muted); }
     .existing-entry .edit-hint {
       margin-left: auto;
       font-size: 0.72rem;
@@ -1163,32 +1167,48 @@ function renderCalendar() {
 // ═══════════════════════════════════════════
 //  MODAL
 // ═══════════════════════════════════════════
+function renderEntriesOverview(dateStr) {
+  const container = document.getElementById('existing-entries');
+  let html = '';
+  for (const [uid, meta] of Object.entries(USER_META)) {
+    const entry = state.entries[dateStr]?.[uid];
+    if (entry) {
+      const ok = entry.minutes >= SUCCESS_MIN ? '✅' : '⚠️';
+      html += `<div class="existing-entry ${uid}" data-user="${uid}">
+        ${meta.emoji} ${meta.name} &nbsp;·&nbsp; ${entry.minutes} min ${ok}
+        <span class="edit-hint">edit</span>
+      </div>`;
+    } else {
+      html += `<div class="existing-entry no-entry" data-user="${uid}">
+        ${meta.emoji} ${meta.name} &nbsp;·&nbsp; —
+        <span class="edit-hint">add</span>
+      </div>`;
+    }
+  }
+  container.innerHTML = html;
+  container.querySelectorAll('.existing-entry').forEach(row => {
+    row.addEventListener('click', () => selectUser(row.dataset.user));
+  });
+}
+
 function openModal(dateStr) {
   state.selectedDate = dateStr;
   state.selectedUser = null;
 
   document.getElementById('modal-date').textContent = formatDateLabel(dateStr);
+  document.getElementById('entry-form').classList.add('hidden');
 
-  // Show existing entries
-  const existing = document.getElementById('existing-entries');
   const dagEntry = state.entries[dateStr]?.dag;
   const evaEntry = state.entries[dateStr]?.eva;
-  let existingHtml = '';
-  if (dagEntry) {
-    const ok = dagEntry.minutes >= SUCCESS_MIN ? '✅' : '⚠️';
-    existingHtml += `<div class="existing-entry dag">🧔 ${dagEntry.minutes} min ${ok}
-      <span class="edit-hint">tap to edit</span></div>`;
-  }
-  if (evaEntry) {
-    const ok = evaEntry.minutes >= SUCCESS_MIN ? '✅' : '⚠️';
-    existingHtml += `<div class="existing-entry eva">🙋‍♀️ ${evaEntry.minutes} min ${ok}
-      <span class="edit-hint">tap to edit</span></div>`;
-  }
-  existing.innerHTML = existingHtml;
 
-  // Show user selector, hide form
-  document.getElementById('user-selector').classList.remove('hidden');
-  document.getElementById('entry-form').classList.add('hidden');
+  if (dagEntry || evaEntry) {
+    renderEntriesOverview(dateStr);
+    document.getElementById('existing-entries').classList.remove('hidden');
+    document.getElementById('user-selector').classList.add('hidden');
+  } else {
+    document.getElementById('existing-entries').classList.add('hidden');
+    document.getElementById('user-selector').classList.remove('hidden');
+  }
 
   document.getElementById('modal-overlay').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
@@ -1292,8 +1312,18 @@ function attachEvents() {
 
   document.getElementById('back-btn').addEventListener('click', () => {
     document.getElementById('entry-form').classList.add('hidden');
-    document.getElementById('user-selector').classList.remove('hidden');
     state.selectedUser = null;
+
+    const dagEntry = state.entries[state.selectedDate]?.dag;
+    const evaEntry = state.entries[state.selectedDate]?.eva;
+    if (dagEntry || evaEntry) {
+      renderEntriesOverview(state.selectedDate);
+      document.getElementById('existing-entries').classList.remove('hidden');
+      document.getElementById('user-selector').classList.add('hidden');
+    } else {
+      document.getElementById('existing-entries').classList.add('hidden');
+      document.getElementById('user-selector').classList.remove('hidden');
+    }
   });
 
   document.getElementById('save-btn').addEventListener('click', doSave);
