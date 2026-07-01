@@ -684,7 +684,7 @@ const USER_META = {
 // ═══════════════════════════════════════════
 const state = {
   entries:      {},     // { 'YYYY-MM-DD': { dag?: {minutes,ts}, eva?: {minutes,ts} } }
-  currentMonth: { year: 2026, month: 5 },   // 0-indexed month
+  currentMonth: { year: new Date().getFullYear(), month: new Date().getMonth() },
   selectedDate: null,
   selectedUser: null,
 };
